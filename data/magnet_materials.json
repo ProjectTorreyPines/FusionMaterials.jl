@@ -1,0 +1,25 @@
+{
+    "Nb3Sn": {
+        "chemical_equation": "Nb3Sn",
+        "density": 8.69,
+        "density_unit": "g/cm3",
+        "percent_type": "ao"
+    },
+    "copper": {
+        "elements": {"Cu": 1.0},
+        "density": 8.96,
+        "density_unit": "g/cm3",
+        "percent_type": "ao"
+    },
+    "ReBCO": {
+        "elements": {
+            "Y": 1.00,
+            "Ba": 2.00,
+            "Cu": 3.00,
+            "O": 7.00
+        },
+        "density": 6.3,
+        "density_unit": "g/cm3",
+        "percent_type": "ao"
+    }
+}

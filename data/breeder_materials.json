@@ -1,0 +1,20 @@
+{
+    "Li": {
+        "chemical_equation": "Li",
+        "density": "0.515 - 1.01e-4 * (temperature + 273.15 - 200)",
+        "density_unit": "g/cm3",
+        "comment": "http://aries.ucsd.edu/LIB/PROPS/PANOS/li.html",
+        "percent_type": "ao",
+        "enrichment_target":"Li6",
+        "enrichment_type":"ao"
+    },
+    "FLiNaK": {
+        "chemical_equation": "FLiNaK",
+        "density": 2.1,
+        "density_unit":"g/cm3",
+        "comment": "Based on chemical formula",
+        "percent_type": "ao",
+        "enrichment_target":"Li6",
+        "enrichment_type":"ao"
+    }
+}
