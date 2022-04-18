@@ -5,7 +5,7 @@
         "density_unit": "g/cm3",
         "percent_type": "ao"
     },
-    "copper": {
+    "Copper": {
         "elements": {"Cu": 1.0},
         "density": 8.96,
         "density_unit": "g/cm3",
