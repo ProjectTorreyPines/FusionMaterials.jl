@@ -101,6 +101,8 @@ for mat in ["Tungsten"]
     custom["shield_materials"][mat] = material(mat)
 end
 
+empty!(cache)
+
 export available_materials_groups, available_materials, material
 
 end # module
