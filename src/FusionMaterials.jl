@@ -12,7 +12,7 @@ const cache = Dict()
 Return list of available materials groups
 """
 function available_materials_groups()
-    original = [replace(filename, ".json" => "") for filename in readdir(joinpath(dirname(dirname(@__FILE__)), "data")) if endswith(filename, ".json")]
+    original = [replace(filename, ".json" => "") for filename in readdir(joinpath(dirname(@__DIR__), "data")) if endswith(filename, ".json")]
     return sort(unique(vcat(original..., collect(keys(custom))...)))
 end
 
@@ -58,7 +58,7 @@ function material_group(group_name::String)
     if group_name in keys(custom)
         return custom[group_name]
     elseif !(group_name in keys(cache))
-        filename = joinpath(dirname(dirname(@__FILE__)), "data", "$group_name.json")
+        filename = joinpath(dirname(@__DIR__), "data", "$group_name.json")
         materials = JSON.parsefile(filename)
         cache[group_name] = materials
     end
