@@ -87,15 +87,18 @@ function material(material_group::String, material_name::String)
     return material_group(material_group)[material_name]
 end
 
-custom = Dict()
+const custom = Dict()
+
 custom["blanket_materials"] = Dict()
 custom["blanket_materials"] = material_group("multiplier_and_breeder_materials")
+
 custom["wall_materials"] = Dict()
-for mat in available_materials(r"Steel*")
+for mat in [available_materials(r"Steel*"); "Tungsten"]
     custom["wall_materials"][mat] = material(mat)
 end
+
 custom["shield_materials"] = Dict()
-for mat in ["Tungsten"]
+for mat in [available_materials(r"Steel*"); "Tungsten"]
     custom["shield_materials"][mat] = material(mat)
 end
 
