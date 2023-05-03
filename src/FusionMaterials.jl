@@ -95,12 +95,12 @@ for mat in ["lithium-lead", "FLiBe"]
 end
 
 custom["wall_materials"] = Dict()
-for mat in ["Steel, Stainless 316", "Tungsten"; "Carbon, Graphite (reactor grade)"]
+for mat in ["Steel, Stainless 316", "Tungsten", "Carbon, Graphite (reactor grade)"]
     custom["wall_materials"][mat] = material(mat)
 end
 
 custom["shield_materials"] = Dict()
-for mat in ["Steel, Stainless 316"; "Tungsten"]
+for mat in ["Steel, Stainless 316", "Tungsten"]
     custom["shield_materials"][mat] = material(mat)
 end
 
