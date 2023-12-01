@@ -42,6 +42,15 @@ function available_materials(group_name::String)::Vector{String}
     return collect(keys(material_group(group_name)))
 end
 
+"""
+    available_materials(group_name::AbstractVector(String))
+
+Return available materials within several groups
+"""
+function available_materials(group_names::Vector{String})::Vector{String}
+    return vcat((collect(keys(material_group(group_name))) for group_name in group_names)...)
+end
+
 function available_materials(regex::Regex)::Vector{String}
     materials = available_materials(; by_group=false)
     return [material for material in materials if match(regex, material) !== nothing]
