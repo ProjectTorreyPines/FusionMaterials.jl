@@ -10,12 +10,14 @@
     },
     "lithium-lead": {
         "chemical_equation": "Pb842Li158",
-        "density": "99.90*(0.1-16.8e-6*(temperature - 273.15))",
+        "density_scaling": "99.90*(0.1-16.8e-6*(temperature - 273.15))",
+        "density": 9.15084, 
         "density_unit": "g/cm3",
         "comment": "density equation valid for in the range 240-350 C. source http://aries.ucsd.edu/LIB/PROPS/PANOS/lipb.html",
         "percent_type": "ao",
         "enrichment_target":"Li6",
-        "enrichment_type":"ao"
+        "enrichment_type":"ao",
+        "unit_cost": 25
     },
     "Li8PbO6": {
         "chemical_equation": "Li8PbO6",
@@ -29,12 +31,14 @@
     },
     "FLiBe": {
         "chemical_equation": "F2Li2BeF2",
-        "density": "2.214 - 4.2e-4 * (temperature - 273.15)",
+        "density_scaling": "2.214 - 4.2e-4 * (temperature - 273.15)",
+        "density": 2.004,
         "density_unit": "g/cm3",
         "comment": "source http://aries.ucsd.edu/LIB/MEETINGS/0103-TRANSMUT/gohar/Gohar-present.pdf",
         "percent_type": "ao",
         "enrichment_target":"Li6",
-        "enrichment_type":"ao"
+        "enrichment_type":"ao",
+        "unit_cost": 43
     },
     "FLiNaBe": {
         "chemical_equation": "FLiNaBe",

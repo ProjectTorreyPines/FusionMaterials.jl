@@ -3,13 +3,30 @@
         "chemical_equation": "Nb3Sn",
         "density": 8.69,
         "density_unit": "g/cm3",
-        "percent_type": "ao"
+        "percent_type": "ao",
+        "unit_cost": 700
     },
-    "copper": {
+    "NbTi": {
+        "chemical_equation": "NbTi",
+        "density": 5.7,
+        "density_unit": "g/cm3",
+        "percent_type": "ao",
+        "unit_cost": 100
+    },
+    
+    "Copper": {
         "elements": {"Cu": 1.0},
         "density": 8.96,
         "density_unit": "g/cm3",
-        "percent_type": "ao"
+        "percent_type": "ao",
+        "unit_cost": 8.36
+    },
+    "Aluminum": {
+        "elements": {"Al": 1.0},
+        "density": 2.7,
+        "density_unit": "g/cm3",
+        "percent_type": "ao",
+        "unit_cost": 2.16
     },
     "ReBCO": {
         "elements": {
@@ -20,6 +37,7 @@
         },
         "density": 6.3,
         "density_unit": "g/cm3",
-        "percent_type": "ao"
+        "percent_type": "ao",
+        "unit_cost": 7000
     }
 }
