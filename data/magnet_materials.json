@@ -13,7 +13,6 @@
         "percent_type": "ao",
         "unit_cost": 100
     },
-    
     "Copper": {
         "elements": {"Cu": 1.0},
         "density": 8.96,

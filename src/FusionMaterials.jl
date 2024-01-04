@@ -96,6 +96,32 @@ function material(material_group::String, material_name::String)
     return material_group(material_group)[material_name]
 end
 
+"""
+    detect_duplicates()
+"""
+function detect_duplicates()
+    duplicates = Dict()
+    for mg in available_materials_groups()
+        if mg in keys(custom)
+            continue
+        end
+        materials = material_group(mg)
+        for mat in keys(materials)
+            if mat ∉ keys(duplicates)
+                duplicates[mat] = [mg]
+            else
+                push!(duplicates[mat], mg)
+            end
+        end
+    end
+    for mat in keys(duplicates)
+        if length(duplicates[mat]) == 1
+            pop!(duplicates, mat)
+        end
+    end
+    return duplicates
+end
+
 const custom = Dict()
 
 custom["blanket_materials"] = Dict()
