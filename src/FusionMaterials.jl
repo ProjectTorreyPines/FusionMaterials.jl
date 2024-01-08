@@ -2,6 +2,8 @@ module FusionMaterials
 
 using JSON
 
+include("materials.jl")
+
 const cache = Dict()
 
 """
