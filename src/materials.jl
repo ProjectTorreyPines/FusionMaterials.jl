@@ -32,7 +32,7 @@ end
 
 function Material(::Type{Val{:Graphite}};)
     mat = Material()
-    mat.name = "Carbon, Graphite (reactor grade)"
+    mat.name = "Graphite"
     mat.density = 1.7
     mat.unit_cost = 1.3 # source: https://businessanalytiq.com/procurementanalytics/index/graphite-price-index/
     return mat
@@ -73,7 +73,7 @@ end
 
 function Material(::Type{Val{:Steel}})
     mat = Material()
-    mat.name = "Steel, Stainless 316"
+    mat.name = "Steel"
     mat.density = 7.93
     mat.unit_cost = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
     return mat
@@ -85,6 +85,27 @@ function Material(::Type{Val{:Tungsten}})
     mat.density = 19.3
     mat.unit_cost = 31.2 # source: https://almonty.com/tungsten/demand-pricing/
     return mat
+end
+
+function Material(::Type{Val{:Vacuum}})
+    mat = Material()
+    mat.name = "Vacuum"
+    mat.density = 0.0
+    mat.unit_cost = 0
+    return mat
+end
+
+function Material(::Type{Val{:Water}})
+    mat = Material()
+    mat.name = "Water"
+    mat.density = 1.0
+    mat.unit_cost = 0
+    return mat
+end
+
+function Material(name_as_string::String)
+    name_as_string = replace(name_as_string, "-" => "_")
+    return Material(Symbol(name_as_string))
 end
 
 # Dispatch on symbol
