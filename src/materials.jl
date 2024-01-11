@@ -220,7 +220,7 @@ function supported_coil_techs()
     all_materials = [:Aluminum, :Copper, :FLiBe, :Graphite, :Lithium_Lead, :Nb3Sn, :ITER_Nb3Sn, :KDEMO_Nb3Sn, :NbTi, :ReBCO, :Steel, :Tungsten, :Vacuum]
 
     for mats in all_materials
-        if IMAS._tf_ ∈ FusionMaterials.Material(mats).type
+        if IMAS._tf_ ∈ FusionMaterials.Material(mats).type || IMAS._oh_ ∈ FusionMaterials.Material(mats).type
             push!(supported_coil_materials, Symbol(FusionMaterials.Material(mats).name))
         end
     end
