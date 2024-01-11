@@ -1,8 +1,10 @@
 module FusionMaterials
 
 using JSON
+using IMAS
 
 include("materials.jl")
+include("jcrit.jl")
 
 const cache = Dict()
 
