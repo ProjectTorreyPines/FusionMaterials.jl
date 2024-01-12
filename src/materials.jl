@@ -29,6 +29,22 @@ function Material(::Type{Val{:Copper}})
 	return mat
 end
 
+function Material(::Type{Val{:DD_plasma}})
+	mat = Material()
+	mat.name = "DD_plasma"
+    mat.density = 0.00000004
+    mat.unit_cost = 0.0
+	return mat
+end
+
+function Material(::Type{Val{:DT_plasma}})
+	mat = Material()
+	mat.name = "DT_plasma"
+    mat.density = 0.00000005
+    mat.unit_cost = 0.0
+	return mat
+end
+
 function Material(::Type{Val{:FLiBe}}; temperature::Real = 500.0)
 	mat = Material()
 	mat.name = "FLiBe"
