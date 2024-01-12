@@ -5,6 +5,7 @@ using IMAS
 
 include("materials.jl")
 include("jcrit.jl")
+include("materials_utils.jl")
 
 const cache = Dict()
 
