@@ -32,6 +32,7 @@ end
 function Material(::Type{Val{:DD_plasma}})
 	mat = Material()
 	mat.name = "DD_plasma"
+    mat.type = [IMAS._plasma_]
     mat.density = 0.00000004
     mat.unit_cost = 0.0
 	return mat
@@ -40,6 +41,7 @@ end
 function Material(::Type{Val{:DT_plasma}})
 	mat = Material()
 	mat.name = "DT_plasma"
+    mat.type = [IMAS._plasma_]
     mat.density = 0.00000005
     mat.unit_cost = 0.0
 	return mat
@@ -169,7 +171,7 @@ end
 function Material(::Type{Val{:Steel}})
 	mat = Material()
 	mat.name = "Steel"
-    mat.type = [IMAS._vessel_]
+    mat.type = [IMAS._cryostat_, IMAS._shield_]
 	mat.density = 7.93
 	mat.unit_cost = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
 	return mat
@@ -196,6 +198,7 @@ end
 function Material(::Type{Val{:Water}})
 	mat = Material()
 	mat.name = "Water"
+    mat.type = [IMAS._vessel_]
 	mat.density = 1.0
 	mat.unit_cost = 0
 	return mat

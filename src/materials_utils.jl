@@ -2,13 +2,14 @@
 # Utilities #
 #############
 
+const all_materials = [:Aluminum, :Copper, :DD_plasma, :DT_plasma, :FLiBe, :Graphite, :Lithium_Lead, :Nb3Sn, :ITER_Nb3Sn, :KDEMO_Nb3Sn, :NbTi, :ReBCO, :Steel, :Tungsten, :Vacuum, :Water]
+
 function Material(name_as_string::String)
 	name_as_string = replace(name_as_string, "-" => "_")
 	return Material(Symbol(name_as_string))
 end
 
 function is_supported_material(mat::Symbol, layer_type::IMAS.BuildLayerType)
-    all_materials = [:Aluminum, :Copper, :FLiBe, :Graphite, :Lithium_Lead, :Nb3Sn, :ITER_Nb3Sn, :KDEMO_Nb3Sn, :NbTi, :ReBCO, :Steel, :Tungsten, :Vacuum]
     
     if mat ∉ all_materials
         error("$mat is not a valid material. Supported materials are $(join(all_materials, ", "))" )
@@ -30,7 +31,6 @@ end
 
 function supported_coil_techs()
     supported_coil_materials::Vector{Symbol} = []
-    all_materials = [:Aluminum, :Copper, :FLiBe, :Graphite, :Lithium_Lead, :Nb3Sn, :ITER_Nb3Sn, :KDEMO_Nb3Sn, :NbTi, :ReBCO, :Steel, :Tungsten, :Vacuum]
 
     for mats in all_materials
         if IMAS._tf_ ∈ FusionMaterials.Material(mats).type || IMAS._oh_ ∈ FusionMaterials.Material(mats).type
