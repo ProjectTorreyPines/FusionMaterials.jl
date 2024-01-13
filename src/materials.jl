@@ -2,8 +2,8 @@ Base.@kwdef mutable struct Material
 	name::Union{String, Missing} = missing
     type::Union{Vector{IMAS.BuildLayerType}, Missing} = missing
 	density::Union{Real, Missing} = missing # g/cm^3
-	temperature::Union{Real, Missing} = missing # C
-	critical_current_density::Union{Real, Missing} = missing
+	temperature::Union{Real, Missing} = missing # K
+	critical_current_density::Union{Real, Missing} = missing # A/m^2
 	critical_magnetic_field::Union{Real, Missing} = missing # T/T
 	unit_cost::Union{Real, Missing} = missing # $/kg
 end
@@ -47,12 +47,12 @@ function Material(::Type{Val{:DT_plasma}})
 	return mat
 end
 
-function Material(::Type{Val{:FLiBe}}; temperature::Real = 500.0)
+function Material(::Type{Val{:FLiBe}}; temperature::Real = 773.15)
 	mat = Material()
 	mat.name = "FLiBe"
     mat.type = [IMAS._blanket_]
 	mat.temperature = temperature
-	mat.density = 2.214 - 4.2e-4 * temperature
+	mat.density = 2.214 - 4.2e-4 * (temperature - 273.15)
 	mat.unit_cost = 43 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
 	return mat
 end
@@ -66,12 +66,12 @@ function Material(::Type{Val{:Graphite}};)
 	return mat
 end
 
-function Material(::Type{Val{:Lithium_Lead}}; temperature::Real = 500.0)
+function Material(::Type{Val{:Lithium_Lead}}; temperature::Real = 773.15)
 	mat = Material()
 	mat.name = "Lithium-Lead"
     mat.type = [IMAS._blanket_]
 	mat.temperature = temperature
-	mat.density = 99.90 * (0.1 - 16.8e-6 * temperature) # density equation valid in the range 240-350 C, need to fix this
+	mat.density = 99.90 * (0.1 - 16.8e-6 * (temperature - 273.15)) # density equation valid in the range 240-350 C, need to fix this
 	mat.unit_cost = 10 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
 	return mat
 end
@@ -82,7 +82,7 @@ function Material(::Type{Val{:Nb3Sn}}; coil_tech::Union{Missing, IMAS.build__pf_
 	mat.name = "Nb3Sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
 	mat.density = 8.69
-	mat.temperature = 4.2 # fix this bc now it's K in some places and C in others 
+	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
     if !ismissing(coil_tech)
@@ -101,7 +101,7 @@ function Material(::Type{Val{:ITER_Nb3Sn}}; coil_tech::Union{Missing, IMAS.build
 	mat.name = "ITER_Nb3Sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
 	mat.density = 8.69
-	mat.temperature = 4.2 # fix this bc now it's K in some places and C in others 
+	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
     if !ismissing(coil_tech)
@@ -120,7 +120,7 @@ function Material(::Type{Val{:KDEMO_Nb3Sn}}; coil_tech::Union{Missing, IMAS.buil
 	mat.name = "KDEMO_Nb3Sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
 	mat.density = 8.69
-	mat.temperature = 4.2 # fix this bc now it's K in some places and C in others 
+	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
     if !ismissing(coil_tech)
