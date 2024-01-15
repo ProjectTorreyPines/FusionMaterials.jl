@@ -68,7 +68,7 @@ end
 
 function Material(::Type{Val{:lithium_lead}}; temperature::Real = 773.15)
 	mat = Material()
-	mat.name = "Lithium-Lead"
+	mat.name = "lithium_lead"
     mat.type = [IMAS._blanket_]
 	mat.temperature = temperature
 	mat.density = 99.90 * (0.1 - 16.8e-6 * (temperature - 273.15)) # density equation valid in the range 240-350 C, need to fix this
