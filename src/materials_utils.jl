@@ -2,7 +2,7 @@
 # Utilities #
 #############
 
-const all_materials = [:Aluminum, :Copper, :DD_plasma, :DT_plasma, :FLiBe, :Graphite, :Lithium_Lead, :Nb3Sn, :ITER_Nb3Sn, :KDEMO_Nb3Sn, :NbTi, :ReBCO, :Steel, :Tungsten, :Vacuum, :Water]
+const all_materials = [:aluminum, :copper, :dd_plasma, :dt_plasma, :flibe, :graphite, :lithium_lead, :nb3sn, :iter_nb3sn, :kdemo_nb3sn, :nbti, :rebco, :steel, :tungsten, :vacuum, :water]
 
 function Material(name_as_string::String)
 	name_as_string = replace(name_as_string, "-" => "_")
@@ -39,6 +39,10 @@ function supported_coil_techs()
     end
 
     return supported_coil_materials
+end
+
+function all_available_materials()
+    return [String(mat) for mat in all_materials]
 end
 
 # Dispatch on symbol
