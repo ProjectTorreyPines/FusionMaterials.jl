@@ -76,7 +76,6 @@ function Material(::Type{Val{:lithium_lead}}; temperature::Real = 773.15)
 	return mat
 end
 
-# fix Bext placeholder value 
 function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Real = 1.0)
 	mat = Material()
 	mat.name = "nb3sn"
