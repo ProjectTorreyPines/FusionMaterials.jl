@@ -57,15 +57,6 @@ function LTS_Jcrit(lts::LTS_scaling, Bext::Real, strain::Real = 0.0, temperature
 	Bc11 = Bc01 * (1 - t^lts.v)
 	b = min(Bext / Bc11, 1)
 
-	# Neutron irradiation correction based on T Baumgartner et al 2014 Supercond. Sci. Technol. 27 015005
-	# if neutronFluence > 0.0
-	#     p2 = 1.
-	#     q2 = 2.
-	#     beta_b = 1.0-exp(-(neutronFluence/1.87e22)^0.656)
-	#     alpha_b = 1. - beta_b
-	#     J_c = 1.0e-6*A*Tc*Tc*(1.0-t*t)^2*Bc11^(n-3)*(alpha_b*(b^(p-1)*(1-b)^q)+beta_b*(b^p2*(1-b)^q2))  # MA/m^2
-	# end
-
 	# calc critical current density
 	J_c = A * Tc * Tc * (1.0 - t * t)^2 * Bc11^(lts.n - 3) * b^(lts.p - 1) * (1 - b)^lts.q # A/m^2   #Equation 5 in Lu et al.
 
