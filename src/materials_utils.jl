@@ -42,7 +42,7 @@ function supported_coil_techs()
 end
 
 function supported_material_list(layer_type::IMAS.BuildLayerType)
-	supported_material_list::Vector{String} = []
+	supported_material_list= String[]
 
 	for mats in all_materials
 		if layer_type ∈ FusionMaterials.Material(mats).type
