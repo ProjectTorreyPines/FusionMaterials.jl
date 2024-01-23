@@ -76,7 +76,12 @@ function Material(::Type{Val{:lithium_lead}}; temperature::Real = 773.15)
 	return mat
 end
 
+<<<<<<< Updated upstream
 function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real,Missing} = missing)
+=======
+# fix Bext placeholder value 
+function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real, Missing} = missing)
+>>>>>>> Stashed changes
 	mat = Material()
 	mat.name = "nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
@@ -95,7 +100,7 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_
 	return mat
 end
 
-function Material(::Type{Val{:iter_nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Real = 1.0)
+function Material(::Type{Val{:iter_nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real, Missing} = missing)
 	mat = Material()
 	mat.name = "iter_nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
@@ -114,7 +119,7 @@ function Material(::Type{Val{:iter_nb3sn}}; coil_tech::Union{Missing, IMAS.build
 	return mat
 end
 
-function Material(::Type{Val{:kdemo_nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Real = 1.0)
+function Material(::Type{Val{:kdemo_nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real, Missing} = missing)
 	mat = Material()
 	mat.name = "kdemo_nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
@@ -132,7 +137,7 @@ function Material(::Type{Val{:kdemo_nb3sn}}; coil_tech::Union{Missing, IMAS.buil
 	return mat
 end
 
-function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Real = 1.0)
+function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real, Missing} = missing)
 	mat = Material()
 	mat.name = "nbti"
 	mat.type = [IMAS._tf_, IMAS._oh_]
@@ -150,7 +155,7 @@ function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing, IMAS.build__pf_a
 	return mat
 end
 
-function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Real = 1.0)
+function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing, IMAS.build__pf_active__technology, IMAS.build__oh__technology, IMAS.build__tf__technology} = missing, Bext::Union{Real, Missing} = missing)
 	mat = Material()
 	mat.name = "rebco"
 	mat.type = [IMAS._tf_, IMAS._oh_]
@@ -202,5 +207,3 @@ function Material(::Type{Val{:water}})
 	mat.unit_cost = 0
 	return mat
 end
-
-
