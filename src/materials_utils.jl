@@ -30,7 +30,7 @@ function is_supported_material(mat::Symbol, layer_type::IMAS.BuildLayerType)
 end
 
 function supported_coil_techs()
-	supported_coil_materials::Vector{Symbol} = []
+	supported_coil_materials = Symbol[]
 
 	for mats in all_materials
 		if IMAS._tf_ ∈ FusionMaterials.Material(mats).type || IMAS._oh_ ∈ FusionMaterials.Material(mats).type
