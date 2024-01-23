@@ -15,7 +15,7 @@ function is_supported_material(mat::Symbol, layer_type::IMAS.BuildLayerType)
 		error("$mat is not a valid material. Supported materials are $(join(all_materials, ", "))")
 	end
 
-	supported_materials = []
+	supported_materials = Symbol[]
 
 	for mats in all_materials
 		if layer_type ∈ FusionMaterials.Material(mats).type
