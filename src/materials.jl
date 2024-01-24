@@ -1,7 +1,8 @@
 Base.@kwdef mutable struct Material
 	name::Union{String, Missing} = missing
+    description::Union{String, Missing} = missing
 	type::Union{Vector{IMAS.BuildLayerType}, Missing} = missing
-	density::Union{Real, Missing} = missing # g/cm^3
+	density::Union{Real, Missing} = missing # kg/m^3
 	temperature::Union{Real, Missing} = missing # K
 	critical_current_density::Union{Real, Missing} = missing # A/m^2
 	critical_magnetic_field::Union{Real, Missing} = missing # T/T
@@ -13,7 +14,7 @@ function Material(::Type{Val{:aluminum}})
 	mat = Material()
 	mat.name = "aluminum"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 2.7
+	mat.density = 2.7e3
 	mat.unit_cost = 2.16 # source: https://www.focus-economics.com/commodities/base-metals/
 	return mat
 end
@@ -22,7 +23,7 @@ function Material(::Type{Val{:copper}})
 	mat = Material()
 	mat.name = "copper"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 8.96
+	mat.density = 8.96e3
 	mat.unit_cost = 8.36 # source: https://www.focus-economics.com/commodities/base-metals/
 	mat.critical_current_density = 18.5e6 # A/m^2
 	mat.critical_magnetic_field = Inf
@@ -33,7 +34,7 @@ function Material(::Type{Val{:dd_plasma}})
 	mat = Material()
 	mat.name = "dd_plasma"
 	mat.type = [IMAS._plasma_]
-	mat.density = 0.00000004
+	mat.density = 4e-5
 	mat.unit_cost = 0.0
 	return mat
 end
@@ -42,7 +43,7 @@ function Material(::Type{Val{:dt_plasma}})
 	mat = Material()
 	mat.name = "dt_plasma"
 	mat.type = [IMAS._plasma_]
-	mat.density = 0.00000005
+	mat.density = 5e-5
 	mat.unit_cost = 0.0
 	return mat
 end
@@ -52,7 +53,7 @@ function Material(::Type{Val{:flibe}}; temperature::Real = 773.15)
 	mat.name = "flibe"
 	mat.type = [IMAS._blanket_]
 	mat.temperature = temperature
-	mat.density = 2.214 - 4.2e-4 * (temperature - 273.15)
+	mat.density = (temperature - 273.15) * -0.425 + 2245.5 # fitted from Vidrio et al, J. Chem. Eng. Data 2022, 67, 12
 	mat.unit_cost = 43 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
 	return mat
 end
@@ -61,7 +62,7 @@ function Material(::Type{Val{:graphite}};)
 	mat = Material()
 	mat.name = "graphite"
 	mat.type = [IMAS._wall_]
-	mat.density = 1.7
+	mat.density = 1.7e3
 	mat.unit_cost = 1.3 # source: https://businessanalytiq.com/procurementanalytics/index/graphite-price-index/
 	return mat
 end
@@ -71,7 +72,7 @@ function Material(::Type{Val{:lithium_lead}}; temperature::Real = 773.15)
 	mat.name = "lithium_lead"
 	mat.type = [IMAS._blanket_]
 	mat.temperature = temperature
-	mat.density = 99.90 * (0.1 - 16.8e-6 * (temperature - 273.15)) # density equation valid in the range 240-350 C, need to fix this
+	mat.density = 10526.1 - 1.292*temperature # fitted from  Khairulin et al, Int. Journal of Thermophysics 38(2)
 	mat.unit_cost = 10 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
 	return mat
 end
@@ -80,7 +81,7 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing, IMAS.build__pf_
 	mat = Material()
 	mat.name = "nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 8.69
+	mat.density = 8.69e3
 	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
@@ -99,7 +100,7 @@ function Material(::Type{Val{:iter_nb3sn}}; coil_tech::Union{Missing, IMAS.build
 	mat = Material()
 	mat.name = "iter_nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 8.69
+	mat.density = 8.69e3
 	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
@@ -118,7 +119,7 @@ function Material(::Type{Val{:kdemo_nb3sn}}; coil_tech::Union{Missing, IMAS.buil
 	mat = Material()
 	mat.name = "kdemo_nb3sn"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 8.69
+	mat.density = 8.69e3
 	mat.temperature = 4.2
 	mat.unit_cost = 700 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
 
@@ -136,7 +137,7 @@ function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing, IMAS.build__pf_a
 	mat = Material()
 	mat.name = "nbti"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 5.7
+	mat.density = 5.7e3
 	mat.unit_cost = 100 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 11 
 
 	if !ismissing(coil_tech)
@@ -154,7 +155,7 @@ function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing, IMAS.build__pf_
 	mat = Material()
 	mat.name = "rebco"
 	mat.type = [IMAS._tf_, IMAS._oh_]
-	mat.density = 6.3
+	mat.density = 6.3e3
 	mat.unit_cost = 7000
 
 	if !ismissing(coil_tech)
@@ -171,7 +172,7 @@ function Material(::Type{Val{:steel}})
 	mat = Material()
 	mat.name = "steel"
 	mat.type = [IMAS._cryostat_, IMAS._shield_]
-	mat.density = 7.93
+	mat.density = 7.93e3
 	mat.unit_cost = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
 	return mat
 end
@@ -180,7 +181,7 @@ function Material(::Type{Val{:tungsten}})
 	mat = Material()
 	mat.name = "tungsten"
 	mat.type = [IMAS._wall_]
-	mat.density = 19.3
+	mat.density = 19.3e3
 	mat.unit_cost = 31.2 # source: https://almonty.com/tungsten/demand-pricing/
 	return mat
 end
@@ -198,7 +199,7 @@ function Material(::Type{Val{:water}})
 	mat = Material()
 	mat.name = "water"
 	mat.type = [IMAS._vessel_]
-	mat.density = 1.0
+	mat.density = 1.0e3
 	mat.unit_cost = 0
 	return mat
 end
