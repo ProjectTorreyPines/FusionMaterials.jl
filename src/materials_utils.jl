@@ -42,19 +42,15 @@ function supported_coil_techs()
 end
 
 function supported_material_list(layer_type::IMAS.BuildLayerType)
-	supported_material_list= String[]
+	supported_material_list = Symbol[]
 
 	for mats in all_materials
 		if layer_type ∈ FusionMaterials.Material(mats).type
-			push!(supported_material_list, FusionMaterials.Material(mats).name)
+			push!(supported_material_list, Symbol(FusionMaterials.Material(mats).name))
 		end
 	end
 
 	return supported_material_list
-end
-
-function all_available_materials()
-	return [String(mat) for mat in all_materials]
 end
 
 # Dispatch on symbol

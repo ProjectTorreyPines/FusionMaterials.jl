@@ -61,6 +61,7 @@ end
 function Material(::Type{Val{:graphite}};)
 	mat = Material()
 	mat.name = "graphite"
+    mat.description = "Reactor grade carbon, graphite"
 	mat.type = [IMAS._wall_]
 	mat.density = 1.7e3
 	mat.unit_cost = 1.3 # source: https://businessanalytiq.com/procurementanalytics/index/graphite-price-index/
