@@ -47,7 +47,6 @@ OUTPUTS
 J_c : engineering critical current density, A/m^2
 b   : ratio of external magnetic field at conductor to SC critical magnetic field, T/T
 """
-
 function LTS_Jcrit(lts::LTS_scaling, Bext::Real, strain::Real=0.0, temperature::Real=4.2)
     epsilon = strain - lts.epsilon_m
     Bc01 = lts.Bc00 * (1 + lts.c2 * epsilon^2 + lts.c3 * epsilon^3 + lts.c4 * epsilon^4)
@@ -77,7 +76,6 @@ by different manufacturers.
 
 The specific values of the parameters here were determined experimentally for the K-DEMO Nb3Sn conductors.
 """
-
 function KDEMO_Nb3Sn_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
     strain = strain ./ 1e2 # convert from percent to (mm/mm)
 
@@ -132,7 +130,6 @@ OUTPUTS
 J_c : critical current density, A/m^2
 b   : ratio of peak magnetic field at conductor to SC critical magnetic field, T/T
 """
-
 function YBCO_Jcrit(Bext::Real, strain::Real=0.0, temperature::Real=20.0, ag_c::Real=0.0)
     # Equation 2-4, Table 1 in T.S. Lee 2015 FED
     Bcrit = 68.5
@@ -175,7 +172,6 @@ OUTPUTS
 J_c : critical current density, A/m^2
 b   : ratio of peak magnetic field at conductor to SC critical magnetic field, T/T
 """
-
 function ReBCO_Jcrit(Bext::Real, strain::Real=0.0, temperature::Real=20.0, ag_c::Real=0.0)
     fHTSinTape = 1.0 / 46.54 # fraction of ReBCO tape that is YBCO superconductor
     J_c, b = YBCO_Jcrit(Bext, strain, temperature, ag_c)
