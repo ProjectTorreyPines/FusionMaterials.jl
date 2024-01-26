@@ -60,7 +60,6 @@ function Material(name::Symbol, args...; kw...)
     return Material(Val{name}, args...; kw...)
 end
 
-function Material(name_as_string::String)
-    name_as_string = replace(name_as_string, "-" => "_")
-    return Material(Symbol(name_as_string))
+function Material(name::AbstractString, args...; kw...)
+    return Material(Val{Symbol(name)}, args...; kw...)
 end
