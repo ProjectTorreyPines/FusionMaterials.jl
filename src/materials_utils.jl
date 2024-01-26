@@ -5,9 +5,9 @@
 const all_materials =
     [:aluminum, :copper, :dd_plasma, :dt_plasma, :flibe, :graphite, :lithium_lead, :nb3sn, :iter_nb3sn, :kdemo_nb3sn, :nbti, :rebco, :steel, :tungsten, :vacuum, :water]
 
-function Material(name_as_string::String)
-    name_as_string = replace(name_as_string, "-" => "_")
-    return Material(Symbol(name_as_string))
+function test_allowed_keywords(kw)
+    allowed_environment_keywords = [:coil_tech, :temperature, :Bext]
+    @assert all(k -> k in allowed_environment_keywords, keys(kw)) "only $allowed_environment_keywords are allowed as keyword arguments to Material function"
 end
 
 function is_supported_material(mat::Symbol, layer_type::IMAS.BuildLayerType)
@@ -54,8 +54,13 @@ function supported_material_list(layer_type::IMAS.BuildLayerType)
     return supported_material_list
 end
 
-# Dispatch on symbol
+# Dispatch on symbol and string
 
 function Material(name::Symbol, args...; kw...)
     return Material(Val{name}, args...; kw...)
+end
+
+function Material(name_as_string::String)
+    name_as_string = replace(name_as_string, "-" => "_")
+    return Material(Symbol(name_as_string))
 end

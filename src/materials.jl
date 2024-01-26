@@ -10,7 +10,8 @@ Base.@kwdef mutable struct Material
 end
 
 
-function Material(::Type{Val{:aluminum}})
+function Material(::Type{Val{:aluminum}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "aluminum"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -19,7 +20,8 @@ function Material(::Type{Val{:aluminum}})
     return mat
 end
 
-function Material(::Type{Val{:copper}})
+function Material(::Type{Val{:copper}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "copper"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -30,7 +32,8 @@ function Material(::Type{Val{:copper}})
     return mat
 end
 
-function Material(::Type{Val{:dd_plasma}})
+function Material(::Type{Val{:dd_plasma}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "dd_plasma"
     mat.type = [IMAS._plasma_]
@@ -39,7 +42,8 @@ function Material(::Type{Val{:dd_plasma}})
     return mat
 end
 
-function Material(::Type{Val{:dt_plasma}})
+function Material(::Type{Val{:dt_plasma}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "dt_plasma"
     mat.type = [IMAS._plasma_]
@@ -48,7 +52,8 @@ function Material(::Type{Val{:dt_plasma}})
     return mat
 end
 
-function Material(::Type{Val{:flibe}}; temperature::Real=773.15)
+function Material(::Type{Val{:flibe}}; temperature::Real=773.15, kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "flibe"
     mat.type = [IMAS._blanket_]
@@ -58,7 +63,8 @@ function Material(::Type{Val{:flibe}}; temperature::Real=773.15)
     return mat
 end
 
-function Material(::Type{Val{:graphite}};)
+function Material(::Type{Val{:graphite}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "graphite"
     mat.description = "Reactor grade carbon, graphite"
@@ -68,7 +74,8 @@ function Material(::Type{Val{:graphite}};)
     return mat
 end
 
-function Material(::Type{Val{:lithium_lead}}; temperature::Real=773.15)
+function Material(::Type{Val{:lithium_lead}}; temperature::Real=773.15, kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "lithium_lead"
     mat.type = [IMAS._blanket_]
@@ -81,8 +88,9 @@ end
 function Material(
     ::Type{Val{:nb3sn}};
     coil_tech::Union{Missing,IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}=missing,
-    Bext::Union{Real,Missing}=missing
+    Bext::Union{Real,Missing}=missing, kw...
 )
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -104,8 +112,9 @@ end
 function Material(
     ::Type{Val{:iter_nb3sn}};
     coil_tech::Union{Missing,IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}=missing,
-    Bext::Union{Real,Missing}=missing
+    Bext::Union{Real,Missing}=missing, kw...
 )
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "iter_nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -127,8 +136,9 @@ end
 function Material(
     ::Type{Val{:kdemo_nb3sn}};
     coil_tech::Union{Missing,IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}=missing,
-    Bext::Union{Real,Missing}=missing
+    Bext::Union{Real,Missing}=missing, kw...
 )
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "kdemo_nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -149,8 +159,9 @@ end
 function Material(
     ::Type{Val{:nbti}};
     coil_tech::Union{Missing,IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}=missing,
-    Bext::Union{Real,Missing}=missing
+    Bext::Union{Real,Missing}=missing, kw...
 )
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "nbti"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -171,8 +182,9 @@ end
 function Material(
     ::Type{Val{:rebco}};
     coil_tech::Union{Missing,IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}=missing,
-    Bext::Union{Real,Missing}=missing
+    Bext::Union{Real,Missing}=missing, kw...
 )
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "rebco"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -189,7 +201,8 @@ function Material(
     return mat
 end
 
-function Material(::Type{Val{:steel}})
+function Material(::Type{Val{:steel}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "steel"
     mat.type = [IMAS._cryostat_, IMAS._shield_]
@@ -198,7 +211,8 @@ function Material(::Type{Val{:steel}})
     return mat
 end
 
-function Material(::Type{Val{:tungsten}})
+function Material(::Type{Val{:tungsten}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "tungsten"
     mat.type = [IMAS._wall_]
@@ -207,7 +221,8 @@ function Material(::Type{Val{:tungsten}})
     return mat
 end
 
-function Material(::Type{Val{:vacuum}})
+function Material(::Type{Val{:vacuum}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "vacuum"
     mat.type = [IMAS._gap_]
@@ -216,7 +231,8 @@ function Material(::Type{Val{:vacuum}})
     return mat
 end
 
-function Material(::Type{Val{:water}})
+function Material(::Type{Val{:water}}; kw...)
+    test_allowed_keywords(kw)
     mat = Material()
     mat.name = "water"
     mat.type = [IMAS._vessel_]
