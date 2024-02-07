@@ -4,6 +4,7 @@ Base.@kwdef mutable struct Material
     type::Union{Vector{IMAS.BuildLayerType},Missing} = missing
     density::Union{Real,Missing} = missing # kg/m^3
     temperature::Union{Real,Missing} = missing # K
+    thermal_conductivity::Union{Real,Missing} = missing
     critical_current_density::Union{Real,Missing} = missing # A/m^2
     critical_magnetic_field::Union{Real,Missing} = missing # T/T
     unit_cost::Union{Real,Missing} = missing # $/kg
@@ -201,22 +202,24 @@ function Material(
     return mat
 end
 
-function Material(::Type{Val{:steel}}; kw...)
+function Material(::Type{Val{:steel}}; temperature::Real=773.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "steel"
     mat.type = [IMAS._cryostat_, IMAS._shield_]
     mat.density = 7.93e3
+    mat.thermal_conductivity = 9.87 + 0.015 * temperature
     mat.unit_cost = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
     return mat
 end
 
-function Material(::Type{Val{:tungsten}}; kw...)
+function Material(::Type{Val{:tungsten}}; temperature::Real=773.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "tungsten"
     mat.type = [IMAS._wall_]
     mat.density = 19.3e3
+    mat.thermal_conductivity = 204.45 - 0.11986 * temperature + 3.6e-5 * temperature^2 # fitted from ITER Materials Design Limit Data, page 226 (IDM UID 222RLN)
     mat.unit_cost = 31.2 # source: https://almonty.com/tungsten/demand-pricing/
     return mat
 end
