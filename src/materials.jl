@@ -4,29 +4,34 @@ Base.@kwdef mutable struct Material
     type::Union{Vector{IMAS.BuildLayerType},Missing} = missing
     density::Union{Real,Missing} = missing # kg/m^3
     temperature::Union{Real,Missing} = missing # K
-    thermal_conductivity::Union{Real,Missing} = missing
+    thermal_conductivity::Union{Real,Missing} = missing # W/m*K
+    electrical_conductivity::Union{Real,Missing} = missing # S/m
     critical_current_density::Union{Real,Missing} = missing # A/m^2
     critical_magnetic_field::Union{Real,Missing} = missing # T/T
     unit_cost::Union{Real,Missing} = missing # $/kg
 end
 
 
-function Material(::Type{Val{:aluminum}}; kw...)
+function Material(::Type{Val{:aluminum}}; temperature::Real=293.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "aluminum"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = 2.7e3
+    mat.thermal_conductivity = 49503 * exp(-0.072 * temperature) + 216.88
+    mat.electrical_conductivity = 3.5e7
     mat.unit_cost = 2.16 # source: https://www.focus-economics.com/commodities/base-metals/
     return mat
 end
 
-function Material(::Type{Val{:copper}}; kw...)
+function Material(::Type{Val{:copper}}; temperature::Real=293.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "copper"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = 8.96e3
+    mat.thermal_conductivity = 420.13 - 0.068 * temperature # fitted from ITER Materials Design Limit Data, page 137 (IDM UID 222RLN)
+    mat.electrical_conductivity = 5.96e7
     mat.unit_cost = 8.36 # source: https://www.focus-economics.com/commodities/base-metals/
     mat.critical_current_density = 18.5e6 # A/m^2
     mat.critical_magnetic_field = Inf
@@ -64,13 +69,15 @@ function Material(::Type{Val{:flibe}}; temperature::Real=773.15, kw...)
     return mat
 end
 
-function Material(::Type{Val{:graphite}}; kw...)
+function Material(::Type{Val{:graphite}}; temperature::Real=773.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "graphite"
     mat.description = "Reactor grade carbon, graphite"
     mat.type = [IMAS._wall_]
     mat.density = 1.7e3
+    mat.thermal_conductivity = 29815 * temperature^-1.5 + 0.704 # fitted from Paulatto et al, Phys. Rev. B, April 2013, Figure 14
+    mat.electrical_conductivity = 3.3e2
     mat.unit_cost = 1.3 # source: https://businessanalytiq.com/procurementanalytics/index/graphite-price-index/
     return mat
 end
@@ -202,13 +209,14 @@ function Material(
     return mat
 end
 
-function Material(::Type{Val{:steel}}; temperature::Real=773.15, kw...)
+function Material(::Type{Val{:steel}}; temperature::Real=293.15, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "steel"
     mat.type = [IMAS._cryostat_, IMAS._shield_]
     mat.density = 7.93e3
     mat.thermal_conductivity = 9.87 + 0.015 * temperature
+    mat.electrical_conductivity = 1.45e6
     mat.unit_cost = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
     return mat
 end
@@ -220,6 +228,7 @@ function Material(::Type{Val{:tungsten}}; temperature::Real=773.15, kw...)
     mat.type = [IMAS._wall_]
     mat.density = 19.3e3
     mat.thermal_conductivity = 204.45 - 0.11986 * temperature + 3.6e-5 * temperature^2 # fitted from ITER Materials Design Limit Data, page 226 (IDM UID 222RLN)
+    mat.electrical_conductivity = 1.87e7
     mat.unit_cost = 31.2 # source: https://almonty.com/tungsten/demand-pricing/
     return mat
 end
