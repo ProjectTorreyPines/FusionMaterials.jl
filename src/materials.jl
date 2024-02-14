@@ -12,7 +12,7 @@ Base.@kwdef mutable struct Material
 end
 
 
-function Material(::Type{Val{:aluminum}}; temperature::Real=293.15, kw...)
+function Material(::Type{Val{:aluminum}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "aluminum"
@@ -24,7 +24,7 @@ function Material(::Type{Val{:aluminum}}; temperature::Real=293.15, kw...)
     return mat
 end
 
-function Material(::Type{Val{:copper}}; temperature::Real=293.15, kw...)
+function Material(::Type{Val{:copper}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "copper"
@@ -58,7 +58,7 @@ function Material(::Type{Val{:dt_plasma}}; kw...)
     return mat
 end
 
-function Material(::Type{Val{:flibe}}; temperature::Real=773.15, kw...)
+function Material(::Type{Val{:flibe}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "flibe"
@@ -69,7 +69,7 @@ function Material(::Type{Val{:flibe}}; temperature::Real=773.15, kw...)
     return mat
 end
 
-function Material(::Type{Val{:graphite}}; temperature::Real=773.15, kw...)
+function Material(::Type{Val{:graphite}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "graphite"
@@ -82,7 +82,7 @@ function Material(::Type{Val{:graphite}}; temperature::Real=773.15, kw...)
     return mat
 end
 
-function Material(::Type{Val{:lithium_lead}}; temperature::Real=773.15, kw...)
+function Material(::Type{Val{:lithium_lead}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "lithium_lead"
@@ -209,7 +209,7 @@ function Material(
     return mat
 end
 
-function Material(::Type{Val{:steel}}; temperature::Real=293.15, kw...)
+function Material(::Type{Val{:steel}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "steel"
@@ -221,7 +221,7 @@ function Material(::Type{Val{:steel}}; temperature::Real=293.15, kw...)
     return mat
 end
 
-function Material(::Type{Val{:tungsten}}; temperature::Real=773.15, kw...)
+function Material(::Type{Val{:tungsten}}; temperature::Union{Real,Missing}=missing, kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "tungsten"
