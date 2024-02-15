@@ -4,7 +4,7 @@ Base.@kwdef mutable struct Material
     type::Union{Vector{IMAS.BuildLayerType},Missing} = missing
     density::Union{Real,Missing} = missing # kg/m^3
     temperature::Union{Real,Missing} = missing # K
-    thermal_conductivity::Union{Real,Missing} = missing # W/m*K
+    thermal_conductivity::Union{Real,Function,Missing} = missing # W/m*K
     electrical_conductivity::Union{Real,Missing} = missing # S/m
     critical_current_density::Union{Real,Missing} = missing # A/m^2
     critical_magnetic_field::Union{Real,Missing} = missing # T/T
@@ -12,13 +12,16 @@ Base.@kwdef mutable struct Material
 end
 
 
-function Material(::Type{Val{:aluminum}}; temperature::Union{Real,Missing}=missing, kw...)
+function Material(::Type{Val{:aluminum}}; kw...)
     test_allowed_keywords(kw)
     mat = Material()
     mat.name = "aluminum"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = 2.7e3
-    mat.thermal_conductivity = 49503 * exp(-0.072 * temperature) + 216.88
+
+    aluminum_thermal_conductivity(temperature) = 49503 * exp(-0.072 * temperature) + 216.88
+
+    mat.thermal_conductivity = aluminum_thermal_conductivity
     mat.electrical_conductivity = 3.5e7
     mat.unit_cost = 2.16 # source: https://www.focus-economics.com/commodities/base-metals/
     return mat
