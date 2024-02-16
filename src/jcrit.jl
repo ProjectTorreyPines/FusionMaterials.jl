@@ -2,7 +2,7 @@
 # Critical current density functions #
 ######################################
 
-function fraction_conductor(coil_tech::Union{IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology})
+function fraction_conductor(coil_tech::IMAS_build_coil_techs)
     fraction_conductor = 1.0 - coil_tech.fraction_steel - coil_tech.fraction_void # fraction of coil that is a conductor
     @assert fraction_conductor > 0.0 "coil_J_B_crit: coil technology has no room for conductor"
     if coil_tech.material == "copper"
@@ -10,6 +10,10 @@ function fraction_conductor(coil_tech::Union{IMAS.build__pf_active__technology,I
     else
         return fraction_conductor * coil_tech.ratio_SC_to_copper / (1.0 + coil_tech.ratio_SC_to_copper) # fraction of coil that is Nb3Sn superconductor
     end
+end
+
+function fraction_conductor(::Missing)
+    return missing
 end
 
 mutable struct LTS_scaling
@@ -59,12 +63,12 @@ function LTS_Jcrit(lts::LTS_scaling, Bext::Real, strain::Real=0.0, temperature::
     # calc critical current density
     J_c = A * Tc * Tc * (1.0 - t * t)^2 * Bc11^(lts.n - 3) * b^(lts.p - 1) * (1 - b)^lts.q # A/m^2   #Equation 5 in Lu et al.
 
-    return J_c, b
+    return (J_c=J_c, b=b)
 end
 
 """
 
-KDEMO_Nb3Sn_Jcrit(
+nb3sn_kdemo_Jcrit(
 	Bext::Real,         # External magnetic field at conductor, Tesla 
 	strain::Real,       # Strain at conductor, percent 
 	temperature::Real   # Temperature at conductor, K
@@ -76,7 +80,7 @@ by different manufacturers.
 
 The specific values of the parameters here were determined experimentally for the K-DEMO Nb3Sn conductors.
 """
-function KDEMO_Nb3Sn_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
+function nb3sn_kdemo_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
     strain = strain ./ 1e2 # convert from percent to (mm/mm)
 
     # Nine free parameters determined experimentally for KDEMO superconductor 
@@ -110,9 +114,9 @@ function KDEMO_Nb3Sn_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
 
     Ic = (C / Bext) * s * (1.0 - t^1.52) * (1.0 - t^2) * b^p * ((1.0 - b)^q)
 
-    Jc = Ic / (pi * (0.5 * kdemo_diameter)^2 * kdemo_copper_frac)
+    J_c = Ic / (pi * (0.5 * kdemo_diameter)^2 * kdemo_copper_frac)
 
-    return Jc, b
+    return (J_c=J_c, b=b)
 end
 
 """
@@ -156,7 +160,7 @@ function YBCO_Jcrit(Bext::Real, strain::Real=0.0, temperature::Real=20.0, ag_c::
     J_c = Alpha_T * eps * b1 * b2
     b = Bext / Bcrit_T
 
-    return J_c, b
+    return (J_c=J_c, b=b)
 end
 
 """
@@ -174,6 +178,7 @@ b   : ratio of peak magnetic field at conductor to SC critical magnetic field, T
 """
 function ReBCO_Jcrit(Bext::Real, strain::Real=0.0, temperature::Real=20.0, ag_c::Real=0.0)
     fHTSinTape = 1.0 / 46.54 # fraction of ReBCO tape that is YBCO superconductor
-    J_c, b = YBCO_Jcrit(Bext, strain, temperature, ag_c)
-    return J_c * fHTSinTape, b
+    J_c_sc, b = YBCO_Jcrit(Bext, strain, temperature, ag_c)
+    J_c = J_c_sc * fHTSinTape
+    return (J_c=J_c, b=b)
 end
