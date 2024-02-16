@@ -66,21 +66,6 @@ function supported_material_list(layer_type::IMAS.BuildLayerType)
     return supported_material_list
 end
 
-# Evaluate functional material properties 
-
-function thermal_conductivity(name::Union{Symbol,String}; temperature::Union{Real,Missing}=missing)
-    mat = Material(name)
-    if typeof(mat.thermal_conductivity) <: Function && ismissing(temperature)
-        error("Please specify the temperature at which $name thermal conductivity should be evaluated")
-    elseif typeof(mat.thermal_conductivity) <: Function && !ismissing(temperature)
-        thermal_conductivity = mat.thermal_conductivity(temperature)
-    else
-        thermal_conductivity = mat.thermal_conductivity
-    end 
-
-    return thermal_conductivity
-end
-
 # Dispatch on symbol and string
 
 function Material(name::Symbol, args...; kw...)
