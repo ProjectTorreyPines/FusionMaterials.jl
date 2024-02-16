@@ -2,17 +2,7 @@
 # Critical current density functions #
 ######################################
 
-function fraction_conductor(coil_tech::IMAS_build_coil_techs)
-    fraction_conductor = 1.0 - coil_tech.fraction_steel - coil_tech.fraction_void # fraction of coil that is a conductor
-    @assert fraction_conductor > 0.0 "coil_J_B_crit: coil technology has no room for conductor"
-    if coil_tech.material == "copper"
-        return fraction_conductor
-    else
-        return fraction_conductor * coil_tech.ratio_SC_to_copper / (1.0 + coil_tech.ratio_SC_to_copper) # fraction of coil that is Nb3Sn superconductor
-    end
-end
-
-function fraction_conductor(::Missing)
+function IMAS.fraction_conductor(::Missing)
     return missing
 end
 

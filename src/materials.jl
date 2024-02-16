@@ -22,7 +22,7 @@ function cost_m3!(mat::Material)
     if mat.cost_kg == 0.0
         mat.cost_m3 = 0.0
     else
-        mat.cost_m3 = mat.cost_kg .* mat.density(temperature=295.13)
+        mat.cost_m3 = mat.cost_kg .* mat.density(; temperature=295.13)
     end
 end
 
@@ -47,8 +47,8 @@ function Material(::Type{Val{:copper}}; coil_tech::Union{Missing,IMAS_build_coil
     mat.thermal_conductivity = (; temperature::Float64) -> 420.13 - 0.068 * temperature # fitted from ITER Materials Design Limit Data, page 137 (IDM UID 222RLN)
     mat.electrical_conductivity = (; temperature::Float64) -> 5.96e7
     mat.cost_kg = 8.36 # source: https://www.focus-economics.com/commodities/base-metals/
-    mat.critical_current_density = (; temperature::Float64, Bext::Float64, coil_tech::IMAS_build_coil_techs=coil_tech) -> 18.5e6 # A/m^2
-    mat.critical_magnetic_field = (; temperature::Float64, Bext::Float64, coil_tech::IMAS_build_coil_techs=coil_tech) -> Inf
+    mat.critical_current_density = (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) -> 18.5e6 # A/m^2
+    mat.critical_magnetic_field = (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) -> Inf
     cost_m3!(mat)
     return mat
 end
@@ -104,7 +104,7 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.coil_tech = coil_tech
 
     params_Nb3Sn = LTS_scaling(29330000, 28.45, 0.0739, 17.5, -0.7388, -0.5060, -0.0831, 0.8855, 2.169, 2.5, 0.0, 1.5, 2.2)
-    fc = fraction_conductor(coil_tech)
+    fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
         (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) ->
             LTS_Jcrit(params_Nb3Sn, Bext, coil_tech.thermal_strain + coil_tech.JxB_strain, temperature).J_c * fc # A/m^2
@@ -130,7 +130,7 @@ function Material(::Type{Val{:nb3sn_kdemo}}; coil_tech::Union{Missing,IMAS_build
     mat.cost_kg = 700.0 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
     mat.coil_tech = coil_tech
 
-    fc = fraction_conductor(coil_tech)
+    fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
         (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) ->
             nb3sn_kdemo_Jcrit(Bext, coil_tech.thermal_strain + coil_tech.JxB_strain, temperature).J_c * fc # A/m^2
@@ -150,7 +150,7 @@ function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing,IMAS_build_coil_t
     mat.cost_kg = 100.0 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 11 
 
     params_NbTi = LTS_scaling(255.3e6, 14.67, -0.002e-2, 8.89, -0.0025, -0.0003, -0.0001, 1.341, 1.555, 2.274, 0.0, 1.758, 2.2) # Table 1, Journal of Phys: Conf. Series, 1559 (2020) 012063
-    fc = fraction_conductor(coil_tech)
+    fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
         (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) ->
             LTS_Jcrit(params_NbTi, Bext, coil_tech.thermal_strain + coil_tech.JxB_strain, temperature).J_c * fc # A/m^2
@@ -169,7 +169,7 @@ function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.density = (; temperature::Float64) -> 6.3e3
     mat.cost_kg = 7000.0
 
-    fc = fraction_conductor(coil_tech)
+    fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
         (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) ->
             ReBCO_Jcrit(Bext, coil_tech.thermal_strain + coil_tech.JxB_strain, temperature).J_c * fc # A/m^2
