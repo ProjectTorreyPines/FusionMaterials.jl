@@ -102,6 +102,43 @@ function supported_material_list(layer_type::IMAS.BuildLayerType)
     return supported_material_list
 end
 
+"""
+    new_compound_layer(layer::IMAS.build__layer, composition_dict::AbstractDict{String, <:Real})
+
+Takes a dictionary containing material names and compositions and assigns them to a specified layer 
+"""
+
+function new_compound_layer(layer::IMAS.build__layer, composition_dict::AbstractDict{String, <:Real})
+    @assert sum([composition_dict[key] for key in keys(composition_dict)]) == 1 "Sum of material fractions must be 1"
+
+    resize!(layer.material, length(composition_dict))
+
+    for (i, key) in enumerate(keys(composition_dict))
+        layer.material[i].name = key
+        layer.material[i].composition = composition_dict[key]
+    end
+end
+
+"""
+    simplified_compound_material_property(layer::IMAS.build__layer, mat_property::Symbol, temperature::Float64)
+
+Returns the composite material property for a specified composition of multiple materials as a simple linear combination 
+"""
+
+function simplified_compound_material_property(layer::IMAS.build__layer, mat_property::Symbol, temperature::Float64)
+    if length(layer.material) == 1 
+        composite_property = getproperty(FusionMaterials.Material(layer.material[1].name), mat_property)(temperature)
+    else 
+        composite_property = 0
+        for i in (1:length(layer.material))
+            composite_property += getproperty(FusionMaterials.Material(layer.material[i].name), mat_property)(;temperature = temperature) * layer.material[i].composition
+        end
+    end
+
+    return composite_property
+
+end
+
 # Dispatch on symbol and string
 
 function Material(name::Symbol, args...; kw...)
