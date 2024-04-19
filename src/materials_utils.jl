@@ -120,18 +120,30 @@ function new_compound_layer(layer::IMAS.build__layer, composition_dict::Abstract
 end
 
 """
-    compound_material_property(layer::IMAS.build__layer, mat_property::Symbol, temperature::Float64)
+    compound_material_property(layer::IMAS.build__layer, mat_property::Symbol; temperature::Float64, Bext::Float64=missing)
 
 Returns the composite material property for a specified composition of multiple materials as a simple linear combination 
 """
 
-function compound_material_property(layer::IMAS.build__layer, mat_property::Symbol, temperature::Float64)
-    if length(layer.material) == 1 
-        composite_property = getproperty(FusionMaterials.Material(layer.material[1].name), mat_property)(temperature)
+function compound_material_property(tech::Union{IMAS.build__layer, IMAS.build__oh__technology,IMAS.build__pf_active__technology,IMAS.build__tf__technology}, mat_property::Symbol; temperature::Union{Missing,Float64}=missing, Bext::Union{Missing,Float64}=missing)
+    if length(tech.material) == 1 
+        if ismissing(getfield(FusionMaterials.Material(tech.material[1].name), mat_property))
+            error("$mat_property is not defined for $(tech.material[1].name)")
+        else 
+            composite_property = getproperty(FusionMaterials.Material(tech.material[1].name), mat_property)(;temperature = temperature, Bext = Bext)
+        end
     else 
         composite_property = 0
-        for i in (1:length(layer.material))
-            composite_property += getproperty(FusionMaterials.Material(layer.material[i].name), mat_property)(;temperature = temperature) * layer.material[i].composition
+        for i in (1:length(tech.material))
+            if ismissing(getfield(FusionMaterials.Material(tech.material[i].name), mat_property))
+                continue
+            else
+                try 
+                    composite_property += getproperty(FusionMaterials.Material(tech.material[i].name), mat_property)(;temperature = temperature, Bext = Bext) * tech.material[i].composition
+                catch(e)
+                    composite_property += getproperty(FusionMaterials.Material(tech.material[i].name), mat_property)(;temperature = temperature) * tech.material[i].composition
+                end
+            end
         end
     end
 
