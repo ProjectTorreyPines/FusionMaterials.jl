@@ -139,6 +139,35 @@ function compound_material_property(layer::IMAS.build__layer, mat_property::Symb
 
 end
 
+"""
+    primary_coil_material(coil_tech::Union{IMAS.build__tf__technology, IMAS.build__oh__technology, IMAS.build__pf_active__technology})
+
+Returns the primary conducting/superconducting material from a compound build layer describing a coil 
+"""
+
+function primary_coil_material(coil_tech::Union{IMAS.build__tf__technology, IMAS.build__oh__technology, IMAS.build__pf_active__technology})
+    all_mats = [coil_tech.material[i].name for i in eachindex(coil_tech.material)]
+    mats = Set(all_mats)
+    mats = setdiff(mats, Set(["copper", "vacuum", "steel"]))
+    if length(mats) == 1
+        return collect(mats)[1]
+    elseif isempty(mats)
+        return "copper"
+    else
+        error("Cannot determine primary material from: $(all_mats)")
+    end
+end
+
+function fraction_conductor(coil_tech::Union{IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology})
+    frac = 1.0 - coil_tech.fraction_steel - coil_tech.fraction_void # fraction of coil that is a conductor
+    @assert frac > 0.0 "coil technology has no room for conductor"
+    if primary_coil_material(coil_tech) == "copper"
+        return frac
+    else
+        return frac * coil_tech.ratio_SC_to_copper / (1.0 + coil_tech.ratio_SC_to_copper) # fraction of coil that is Nb3Sn superconductor
+    end
+end
+
 # Dispatch on symbol and string
 
 function Material(name::Symbol, args...; kw...)
