@@ -100,7 +100,7 @@ function nb3sn_kdemo_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
     t = temperature / Tc_star
 
     Bc_star = Bc20m * s * (1 - t^1.52)
-    b = Bext / Bc_star
+    b = min(Bext / Bc_star, 1)
 
     Ic = (C / Bext) * s * (1.0 - t^1.52) * (1.0 - t^2) * b^p * ((1.0 - b)^q)
 
