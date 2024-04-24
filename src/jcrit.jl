@@ -23,12 +23,12 @@ mutable struct LTS_scaling
 end
 
 """
-LTS_Jcrit(
-	lts::LTS_scaling          # : object containing scaling parameters, specific to conductor type
-	Bext::Real,               # : strength of external magnetic field, Tesla
-	strain::Real=0.0,         # : strain on conductor due to either thermal expansion or JxB stress
-	temperature::Real=4.2,    # : temperature of conductor, Kelvin 
-)
+    LTS_Jcrit(
+        lts::LTS_scaling          # : object containing scaling parameters, specific to conductor type
+        Bext::Real,               # : strength of external magnetic field, Tesla
+        strain::Real=0.0,         # : strain on conductor due to either thermal expansion or JxB stress
+        temperature::Real=4.2,    # : temperature of conductor, Kelvin 
+    )
 
 Calculates the critical current density and fraction of critical magnetic field for either NbTi or Nb3Sn wire, depending on the parameters 
 passed in the lts object. 
@@ -38,8 +38,8 @@ the entire Nb3Sn strand. The strands considered in the reference study are appro
 J_crit of the so-called "non-Cu" part of the wire (i.e. Nb3Sn only) will be approx. twice as large as the value calculated here.
 
 OUTPUTS
-J_c : engineering critical current density, A/m^2
-b   : ratio of external magnetic field at conductor to SC critical magnetic field, T/T
+J_c : critical current density, A/m^2
+b   : ratio of peak magnetic field at conductor to SC critical magnetic field, T/T
 """
 function LTS_Jcrit(lts::LTS_scaling, Bext::Real, strain::Real=0.0, temperature::Real=4.2)
     epsilon = strain - lts.epsilon_m
@@ -57,18 +57,21 @@ function LTS_Jcrit(lts::LTS_scaling, Bext::Real, strain::Real=0.0, temperature::
 end
 
 """
-
-nb3sn_kdemo_Jcrit(
-	Bext::Real,         # External magnetic field at conductor, Tesla 
-	strain::Real,       # Strain at conductor, percent 
-	temperature::Real   # Temperature at conductor, K
-)
+    nb3sn_kdemo_Jcrit(
+        Bext::Real,         # External magnetic field at conductor, Tesla 
+        strain::Real,       # Strain at conductor, percent 
+        temperature::Real   # Temperature at conductor, K
+    )
 
 Calculates critical current density for Nb3Sn conductor according to the ITER 2008 parametrization. The nine free parameters 
 (p, q, C, Ca1, Ca2, epsilon_0a, epsilon_m, Bc20m, Tc0m) have to be determined experimentally and vary between conductors produced 
 by different manufacturers. 
 
 The specific values of the parameters here were determined experimentally for the K-DEMO Nb3Sn conductors.
+
+OUTPUTS
+J_c : critical current density, A/m^2
+b   : ratio of peak magnetic field at conductor to SC critical magnetic field, T/T
 """
 function nb3sn_kdemo_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
     strain = strain ./ 1e2 # convert from percent to (mm/mm)
@@ -110,15 +113,15 @@ function nb3sn_kdemo_Jcrit(Bext::Real, strain::Real, temperature::Real=4.2)
 end
 
 """
+    YBCO_Jcrit(
+        Bext::Real, # : external magnetic field at conductor, Tesla
+        strain::Real = 0.0, # : strain at conductor, percent
+        temperature::Real = 20.0, # : temperature of conductor, K 
+        ag_c::Real = 0.0) # : angle between external field and HTS tape normal vector, degrees. 0 is perp (worst-case), 90 is parallel (best-case). 
+
 Calculates the critical current density of YBCO high-temperature superconductor.
 NOTE: the output critical current density is in terms of current per YBCO cross-sectional area. However, YBCO only comprises ~2% of the cross-sectional
 area of REBCO tape. To get the critical current per cross-sectional area of REBCO tape, scale by the correct ratio of YBCO area to tape area.
-
-	YBCO_Jcrit(
-		Bext::Real, # : external magnetic field at conductor, Tesla
-		strain::Real = 0.0, # : strain at conductor, percent
-		temperature::Real = 20.0, # : temperature of conductor, K 
-		ag_c::Real = 0.0) # : angle between external field and HTS tape normal vector, degrees. 0 is perp (worst-case), 90 is parallel (best-case). 
 
 OUTPUTS
 J_c : critical current density, A/m^2
