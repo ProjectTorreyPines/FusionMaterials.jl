@@ -100,7 +100,8 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.name = "nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = (; temperature::Float64) -> 8.69e3
-    mat.cost_kg = 2301.5
+    mat.cost_kg = 2301.5 # chosen such that cost per unit volume is equal to that of ReBCO (source: May 2024 meeting with ITER CS group)
+    # absolute cost estimated as: total ITER cost (65 B$) * magnet fraction of total ITER cost (25%) / total coil volume 
     mat.coil_tech = coil_tech
 
     params_Nb3Sn = LTS_scaling(29330000, 28.45, 0.0739, 17.5, -0.7388, -0.5060, -0.0831, 0.8855, 2.169, 2.5, 0.0, 1.5, 2.2)
@@ -167,7 +168,8 @@ function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.name = "rebco"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = (; temperature::Float64) -> 6.3e3
-    mat.cost_kg = 3174.6
+    mat.cost_kg = 3174.6 # chosen such that cost per unit volume is equal to that of Nb3Sn (source: May 2024 meeting with ITER CS group)
+    # absolute cost estimated as: total SPARC cost (2 B$) * magnet fraction of total SPARC cost (50%) / total coil volume 
 
     fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
