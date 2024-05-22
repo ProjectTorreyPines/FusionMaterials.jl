@@ -100,7 +100,7 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.name = "nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = (; temperature::Float64) -> 8.69e3
-    mat.cost_kg = 700.0 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
+    mat.cost_kg = 2301.5
     mat.coil_tech = coil_tech
 
     params_Nb3Sn = LTS_scaling(29330000, 28.45, 0.0739, 17.5, -0.7388, -0.5060, -0.0831, 0.8855, 2.169, 2.5, 0.0, 1.5, 2.2)
@@ -127,7 +127,7 @@ function Material(::Type{Val{:nb3sn_kdemo}}; coil_tech::Union{Missing,IMAS_build
     mat.name = "nb3sn_kdemo"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = (; temperature::Float64) -> 8.69e3
-    mat.cost_kg = 700.0 # source: https://uspas.fnal.gov/materials/18MSU/U4-2018.pdf, slide 13
+    mat.cost_kg = 2301.5
     mat.coil_tech = coil_tech
 
     fc = IMAS.fraction_conductor(coil_tech)
@@ -167,7 +167,7 @@ function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing,IMAS_build_coil_
     mat.name = "rebco"
     mat.type = [IMAS._tf_, IMAS._oh_]
     mat.density = (; temperature::Float64) -> 6.3e3
-    mat.cost_kg = 7000.0
+    mat.cost_kg = 3174.6
 
     fc = IMAS.fraction_conductor(coil_tech)
     mat.critical_current_density =
