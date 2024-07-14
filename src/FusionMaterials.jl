@@ -1,6 +1,6 @@
 module FusionMaterials
 
-using IMAS
+import IMAS
 
 include("materials.jl")
 
