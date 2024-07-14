@@ -1,5 +1,19 @@
 const IMAS_build_coil_techs = Union{IMAS.build__pf_active__technology,IMAS.build__oh__technology,IMAS.build__tf__technology}
 
+"""
+    mutable struct Material
+        name::Union{String,Missing} = missing
+        description::Union{String,Missing} = missing
+        type::Union{Vector{IMAS.BuildLayerType},Missing} = missing
+        density::Union{Function,Missing} = missing # kg/m^3
+        coil_tech::Union{IMAS_build_coil_techs,Missing} = missing
+        thermal_conductivity::Union{Function,Missing} = missing # W/m*K
+        electrical_conductivity::Union{Function,Missing} = missing # S/m
+        critical_current_density::Union{Function,Missing} = missing # A/m^2
+        critical_magnetic_field::Union{Function,Missing} = missing # T/T
+        cost_kg::Union{Float64,Missing} = missing # \$/kg
+        cost_m3::Union{Float64,Missing} = missing # \$/m³
+"""
 Base.@kwdef mutable struct Material
     name::Union{String,Missing} = missing
     description::Union{String,Missing} = missing
