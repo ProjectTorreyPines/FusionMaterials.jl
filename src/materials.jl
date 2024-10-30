@@ -13,6 +13,7 @@ const IMAS_build_coil_techs = Union{IMAS.build__pf_active__technology,IMAS.build
         critical_magnetic_field::Union{Function,Missing} = missing # T/T
         cost_kg::Union{Float64,Missing} = missing # \$/kg
         cost_m3::Union{Float64,Missing} = missing # \$/m³
+        manufacturing_multiplier::Union{Float64,Missing} = 1.0
 """
 Base.@kwdef mutable struct Material
     name::Union{String,Missing} = missing
@@ -26,6 +27,7 @@ Base.@kwdef mutable struct Material
     critical_magnetic_field::Union{Function,Missing} = missing # T/T
     cost_kg::Union{Float64,Missing} = missing # $/kg
     cost_m3::Union{Float64,Missing} = missing # $/m³
+    manufacturing_multiplier::Union{Float64,Missing} = 1.0
 end
 
 function Material(coil_tech::IMAS_build_coil_techs)
@@ -48,6 +50,7 @@ function Material(::Type{Val{:aluminum}})
     mat.thermal_conductivity = (; temperature::Float64) -> (49503 * exp(-0.072 * temperature) + 216.88)
     mat.electrical_conductivity = (; temperature::Float64) -> 3.5e7
     mat.cost_kg = 2.16 # source: https://www.focus-economics.com/commodities/base-metals/
+    mat.manufacturing_multiplier = 3
     cost_m3!(mat)
     return mat
 end
@@ -61,6 +64,8 @@ function Material(::Type{Val{:copper}}; coil_tech::Union{Missing,IMAS_build_coil
     mat.thermal_conductivity = (; temperature::Float64) -> 420.13 - 0.068 * temperature # fitted from ITER Materials Design Limit Data, page 137 (IDM UID 222RLN)
     mat.electrical_conductivity = (; temperature::Float64) -> 5.96e7
     mat.cost_kg = 8.36 # source: https://www.focus-economics.com/commodities/base-metals/
+    mat.cost_kg = 10.2 # source: https://github.com/Woodruff-Scientific-Ltd/PyFECONS/blob/e8650deda30b1fb4171ca6d7777d240ed5a44a44/pyfecons/materials.py
+    mat.manufacturing_multiplier = 3
     mat.critical_current_density = (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) -> 18.5e6 # A/m^2
     mat.critical_magnetic_field = (; coil_tech::IMAS_build_coil_techs=coil_tech, temperature::Float64=coil_tech.temperature, Bext::Float64) -> Inf
     cost_m3!(mat)
@@ -82,6 +87,7 @@ function Material(::Type{Val{:flibe}})
     mat.type = [IMAS._blanket_]
     mat.density = (; temperature::Float64) -> (temperature - 273.15) * -0.425 + 2245.5 # fitted from Vidrio et al, J. Chem. Eng. Data 2022, 67, 12
     mat.cost_kg = 43.0 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
+    # mat.cost_kg = 1000 # source: https://github.com/Woodruff-Scientific-Ltd/PyFECONS/blob/e8650deda30b1fb4171ca6d7777d240ed5a44a44/pyfecons/materials.py
     cost_m3!(mat)
     return mat
 end
@@ -99,12 +105,20 @@ function Material(::Type{Val{:graphite}})
     return mat
 end
 
+function pbli_cost_kg(pblir)
+    Pb_c_raw = 2.4
+    Li_c_raw = 70
+    return (Pb_c_raw * pblir + Li_c_raw) / (pblir + 1)
+end
+
 function Material(::Type{Val{:lithium_lead}})
     mat = Material()
     mat.name = "lithium_lead"
     mat.type = [IMAS._blanket_]
     mat.density = (; temperature::Float64) -> 10526.1 - 1.292 * temperature # fitted from  Khairulin et al, Int. Journal of Thermophysics 38(2)
     mat.cost_kg = 10.0 # source: https://fti.neep.wisc.edu/fti.neep.wisc.edu/presentations/mes_zpinch_tofe06.pdf, slide 20
+    mat.cost_kg = pbli_cost_kg(10.0)
+    mat.manufacturing_multiplier = 1.5
     cost_m3!(mat)
     return mat
 end
@@ -203,6 +217,8 @@ function Material(::Type{Val{:steel}})
     mat.thermal_conductivity = (; temperature::Float64) -> 9.87 + 0.015 * temperature
     mat.electrical_conductivity = (; temperature::Float64) -> 1.45e6
     mat.cost_kg = 0.794 # source: https://www.focus-economics.com/commodities/base-metals/steel-usa/
+    mat.cost_kg = 10.0 # https://github.com/Woodruff-Scientific-Ltd/PyFECONS/blob/e8650deda30b1fb4171ca6d7777d240ed5a44a44/pyfecons/materials.py
+    mat.manufacturing_multiplier = 3
     cost_m3!(mat)
     return mat
 end
@@ -215,6 +231,8 @@ function Material(::Type{Val{:tungsten}})
     mat.thermal_conductivity = (; temperature::Float64) -> 204.45 - 0.11986 * temperature + 3.6e-5 * temperature^2 # fitted from ITER Materials Design Limit Data, page 226 (IDM UID 222RLN)
     mat.electrical_conductivity = (; temperature::Float64) -> 1.87e7
     mat.cost_kg = 31.2 # source: https://almonty.com/tungsten/demand-pricing/
+    mat.cost_kg = 100.0 # source: https://github.com/Woodruff-Scientific-Ltd/PyFECONS/blob/e8650deda30b1fb4171ca6d7777d240ed5a44a44/pyfecons/materials.py
+    mat.manufacturing_multiplier = 3
     cost_m3!(mat)
     return mat
 end
