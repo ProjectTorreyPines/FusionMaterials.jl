@@ -1,7 +1,7 @@
 name = "FusionMaterials"
 uuid = "4c86da02-02c8-4634-8460-96566129f8e0"
 authors = ["Orso Meneghini <orso82@gmail.com>"]
-version = "1.0.4"
+version = "1.0.5"
 
 [deps]
 IMAS = "13ead8c1-b7d1-41bb-a6d0-5b8b65ed587a"
