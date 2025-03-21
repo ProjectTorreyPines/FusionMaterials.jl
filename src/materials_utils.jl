@@ -23,6 +23,15 @@ function all_materials()
 end
 
 """
+    ALL_MATERIALS
+
+A constant that caches the result of calling `all_materials()`.
+This computation is performed only once when the module or script is loaded, so subsequent accesses simply retrieve the precomputed list.
+It returns a list of all unique materials supported by the `Material` function.
+"""
+const ALL_MATERIALS = all_materials()
+
+"""
     test_allowed_keywords(kw)
 
 Verifies if the keyword arguments provided (`kw`) are among the allowed environment keywords. Throws an assertion error if any keyword is not allowed.
