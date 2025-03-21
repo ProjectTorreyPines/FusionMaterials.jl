@@ -1,6 +1,6 @@
 using Test
 using FusionMaterials
-using IMAS
+import FusionMaterials.IMAS
 
 @testset "all_materials" begin
     for material_name in sort(FusionMaterials.all_materials())
