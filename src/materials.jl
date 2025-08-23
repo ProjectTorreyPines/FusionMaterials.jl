@@ -42,7 +42,7 @@ function cost_m3!(mat::Material)
     end
 end
 
-function Material(::Type{Val{:aluminum}})
+function Material(::Val{:aluminum})
     mat = Material()
     mat.name = "aluminum"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -55,7 +55,7 @@ function Material(::Type{Val{:aluminum}})
     return mat
 end
 
-function Material(::Type{Val{:copper}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:copper}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material()
     mat.coil_tech = coil_tech
     mat.name = "copper"
@@ -72,7 +72,7 @@ function Material(::Type{Val{:copper}}; coil_tech::Union{Missing,IMAS_build_coil
     return mat
 end
 
-function Material(::Type{Val{:plasma}})
+function Material(::Val{:plasma})
     mat = Material()
     mat.name = "plasma"
     mat.type = [IMAS._plasma_]
@@ -81,7 +81,7 @@ function Material(::Type{Val{:plasma}})
     return mat
 end
 
-function Material(::Type{Val{:flibe}})
+function Material(::Val{:flibe})
     mat = Material()
     mat.name = "flibe"
     mat.type = [IMAS._blanket_]
@@ -92,7 +92,7 @@ function Material(::Type{Val{:flibe}})
     return mat
 end
 
-function Material(::Type{Val{:graphite}})
+function Material(::Val{:graphite})
     mat = Material()
     mat.name = "graphite"
     mat.description = "Reactor grade carbon, graphite"
@@ -111,7 +111,7 @@ function pbli_cost_kg(pblir)
     return (Pb_c_raw * pblir + Li_c_raw) / (pblir + 1)
 end
 
-function Material(::Type{Val{:lithium_lead}})
+function Material(::Val{:lithium_lead})
     mat = Material()
     mat.name = "lithium_lead"
     mat.type = [IMAS._blanket_]
@@ -123,7 +123,7 @@ function Material(::Type{Val{:lithium_lead}})
     return mat
 end
 
-function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:nb3sn}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material()
     mat.name = "nb3sn"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -144,13 +144,13 @@ function Material(::Type{Val{:nb3sn}}; coil_tech::Union{Missing,IMAS_build_coil_
     return mat
 end
 
-function Material(::Type{Val{:nb3sn_iter}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:nb3sn_iter}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material("nb3sn"; coil_tech)
     mat.name = "nb3sn_iter"
     return mat
 end
 
-function Material(::Type{Val{:nb3sn_kdemo}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:nb3sn_kdemo}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material()
     mat.name = "nb3sn_kdemo"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -170,7 +170,7 @@ function Material(::Type{Val{:nb3sn_kdemo}}; coil_tech::Union{Missing,IMAS_build
     return mat
 end
 
-function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:nbti}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material()
     mat.name = "nbti"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -190,7 +190,7 @@ function Material(::Type{Val{:nbti}}; coil_tech::Union{Missing,IMAS_build_coil_t
     return mat
 end
 
-function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
+function Material(::Val{:rebco}; coil_tech::Union{Missing,IMAS_build_coil_techs}=missing)
     mat = Material()
     mat.name = "rebco"
     mat.type = [IMAS._tf_, IMAS._oh_]
@@ -209,7 +209,7 @@ function Material(::Type{Val{:rebco}}; coil_tech::Union{Missing,IMAS_build_coil_
     return mat
 end
 
-function Material(::Type{Val{:steel}})
+function Material(::Val{:steel})
     mat = Material()
     mat.name = "steel"
     mat.type = [IMAS._cryostat_, IMAS._shield_]
@@ -223,7 +223,7 @@ function Material(::Type{Val{:steel}})
     return mat
 end
 
-function Material(::Type{Val{:tungsten}})
+function Material(::Val{:tungsten})
     mat = Material()
     mat.name = "tungsten"
     mat.type = [IMAS._wall_]
@@ -237,7 +237,7 @@ function Material(::Type{Val{:tungsten}})
     return mat
 end
 
-function Material(::Type{Val{:vacuum}})
+function Material(::Val{:vacuum})
     mat = Material()
     mat.name = "vacuum"
     mat.type = [IMAS._gap_]
@@ -247,7 +247,7 @@ function Material(::Type{Val{:vacuum}})
     return mat
 end
 
-function Material(::Type{Val{:water}})
+function Material(::Val{:water})
     mat = Material()
     mat.name = "water"
     mat.type = [IMAS._vessel_]

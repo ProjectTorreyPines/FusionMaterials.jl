@@ -10,13 +10,9 @@ Collects and returns a list of all unique materials supported by the `Material` 
 function all_materials()
     all_materials = Symbol[]
     for m in methods(Material)
-        try
-            if m.sig.parameters[2] isa DataType && m.sig.parameters[2].parameters[1].name.name == :Val
-                material = m.sig.parameters[2].parameters[1].parameters[1]
-                push!(all_materials, material)
-            end
-        catch
-            continue
+        if length(m.sig.parameters) == 2 && m.sig.parameters[2] <: Val
+            material = m.sig.parameters[2].parameters[1]
+            push!(all_materials, material)
         end
     end
     return all_materials
@@ -114,9 +110,9 @@ end
 # Dispatch on symbol and string
 
 function Material(name::Symbol, args...; kw...)
-    return Material(Val{name}, args...; kw...)
+    return Material(Val(name), args...; kw...)
 end
 
 function Material(name::AbstractString, args...; kw...)
-    return Material(Val{Symbol(name)}, args...; kw...)
+    return Material(Val(Symbol(name)), args...; kw...)
 end
