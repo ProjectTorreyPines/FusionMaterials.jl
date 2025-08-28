@@ -7,4 +7,4 @@ version = "1.0.9"
 IMAS = "13ead8c1-b7d1-41bb-a6d0-5b8b65ed587a"
 
 [compat]
-IMAS = "1, 2, 3, 4, 5"
+IMAS = "1, 2, 3, 4, 5, 6"
