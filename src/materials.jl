@@ -111,6 +111,18 @@ function pbli_cost_kg(pblir)
     return (Pb_c_raw * pblir + Li_c_raw) / (pblir + 1)
 end
 
+function Material(::Val{:inconel})
+    mat = Material()
+    mat.name = "inconel"
+    mat.type = [IMAS._vessel_, IMAS._shield_]
+    mat.density = (; temperature::Float64) -> 8.19e3 # Inconel 625 at room temperature, source: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf
+    mat.thermal_conductivity = (; temperature::Float64) -> 9.8 + 0.0138 * temperature # fitted from Special Metals Inconel 625 data (W/m·K), valid 20-650°C
+    mat.electrical_conductivity = (; temperature::Float64) -> 8.2e5 
+    mat.cost_kg = 50.0 # source: https://en.cocessalloys.com/news/108.html (Inconel 625: $40-70/kg), https://www.chemanalyst.com/Pricing-data/inconel-1365 (Q1 2025: ~$56/kg)
+    cost_m3!(mat)
+    return mat
+end
+
 function Material(::Val{:lithium_lead})
     mat = Material()
     mat.name = "lithium_lead"
