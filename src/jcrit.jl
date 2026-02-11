@@ -2,7 +2,7 @@
 # Critical current density functions #
 ######################################
 
-function IMAS.fraction_conductor(::Missing)
+function fraction_conductor(::Missing)
     return missing
 end
 
